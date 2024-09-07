@@ -1,6 +1,11 @@
 import React from 'react';
-
+import {useNavigate} from 'react-router-dom';
 const Modal = ({ product, onClose }) => {
+
+  const navigate= useNavigate();
+  const handlePurchase = ()=>{
+    navigate('/payment',{ state: product });
+  }
   if (!product) return null;
 
   return (
@@ -29,7 +34,7 @@ const Modal = ({ product, onClose }) => {
             <p className="text-lg font-semibold text-gray-700 mb-2"><strong>Price:</strong> ${product.price}</p>
             
 
-            <button className='bg-amber-900 text-white px-10 py-2 border-white hover:bg-white hover:text-amber-950 hover:border-amber-950 border-2 mt-2 transition-colors duration-300 rounded-lg'>Buy Now</button>
+            <button onClick={handlePurchase} className='bg-amber-900 text-white px-10 py-2 border-white hover:bg-white hover:text-amber-950 hover:border-amber-950 border-2 mt-2 transition-colors duration-300 rounded-lg'>Buy Now</button>
           </div>
         </div>
 

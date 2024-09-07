@@ -11,8 +11,8 @@ import ProductViewer from './components/improve/getprod'
 import AddNew from './pages/Dashboard/AddNew'
 import Products from './pages/Products/Products'
 import ShippingDoc from './pages/Dashboard/ShippingDoc'
-import PaymentRec from './pages/Dashboard/PaymentRec'
 
+import Payment from './pages/Products/Payments'
 const App = () => {
   return (
     <Router>
@@ -27,8 +27,9 @@ const App = () => {
         <Route path="/getprod" element={<ProductViewer />} />
         <Route path="/addprod" element={<AddNew />} />
         <Route path="/shippingdoc" element={<ShippingDoc />} />
-        <Route path="/paymentrec" element={<PaymentRec />} />
-        
+
+        <Route path="/payment" elenennt={<Payment/>}/>
+        <Route path='*' element={<h1>Not Found</h1>} />
       </Routes>
     </Router>
   )
