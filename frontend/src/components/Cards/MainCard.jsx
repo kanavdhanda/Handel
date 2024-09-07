@@ -3,7 +3,7 @@ import React from 'react';
 const MainCard = ({ name, description, onClick }) => {
   return (
     <div 
-      className="bg-white shadow-md rounded-md p-5 w-[260px] h-[360px] flex flex-col justify-between cursor-pointer transition-transform transform hover:scale-[1.03]" 
+      className="bg-white shadow-md rounded-md p-5 max-w-[260px] min-w-[260px] h-[360px] flex flex-col justify-between cursor-pointer transition-transform transform hover:scale-[1.03]" 
       onClick={onClick}  // Added onClick to trigger modal
     >
       <img 

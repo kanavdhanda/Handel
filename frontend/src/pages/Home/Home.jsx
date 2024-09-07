@@ -1,4 +1,3 @@
-import React from 'react'
 
 import Navbar from '../../components/Navbar/Navbar'
 import NavigationBar from '../../components/Navbar/NavigationBar'
@@ -6,7 +5,7 @@ import CardSection from '../../components/Section/CardSection'
 import Footer from '../../components/Footer/Footer'
 import { Link } from 'react-router-dom'
 
-const Home = () => {
+const  Home = () => {
   return (
     <>
       <Navbar />

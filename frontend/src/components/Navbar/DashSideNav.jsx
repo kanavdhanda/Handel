@@ -29,11 +29,18 @@ const DashSideNav = () => {
           Product Documentation
         </NavLink>
         <NavLink 
-          to="/settings" 
+          to="/shippingdoc" 
           className="py-4 px-12 hover:bg-gray-200 transition-colors"
           activeClassName="bg-gray-700"
         >
           Shipping Documentation
+        </NavLink>
+        <NavLink 
+          to="/paymentrec" 
+          className="py-4 px-12 hover:bg-gray-200 transition-colors"
+          activeClassName="bg-gray-700"
+        >
+          Payment Reconcilation
         </NavLink>
         <NavLink 
           to="/settings" 

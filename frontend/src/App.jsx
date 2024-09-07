@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
@@ -9,6 +10,8 @@ import SignUp from './pages/Auth/SignUp'
 import ProductViewer from './components/improve/getprod'
 import AddNew from './pages/Dashboard/AddNew'
 import Products from './pages/Products/Products'
+import ShippingDoc from './pages/Dashboard/ShippingDoc'
+import PaymentRec from './pages/Dashboard/PaymentRec'
 
 const App = () => {
   return (
@@ -23,6 +26,8 @@ const App = () => {
         <Route path="/products" element={<Products />} />
         <Route path="/getprod" element={<ProductViewer />} />
         <Route path="/addprod" element={<AddNew />} />
+        <Route path="/shippingdoc" element={<ShippingDoc />} />
+        <Route path="/paymentrec" element={<PaymentRec />} />
         
       </Routes>
     </Router>
