@@ -11,7 +11,7 @@ import ProductViewer from './components/improve/getprod'
 import AddNew from './pages/Dashboard/AddNew'
 import Products from './pages/Products/Products'
 import ShippingDoc from './pages/Dashboard/ShippingDoc'
-
+import OrderPage from './components/Section/order';
 import Payments from './pages/Products/Payments'
 
 const App = () => {
@@ -31,6 +31,7 @@ const App = () => {
 
         <Route path="/payment" element={<Payments />} />
         <Route path='*' element={<h1>Not Found</h1>} />
+        <Route path="/order" element={<OrderPage />} />
       </Routes>
     </Router>
   )
