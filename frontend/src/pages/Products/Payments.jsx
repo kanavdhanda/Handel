@@ -10,7 +10,7 @@ const Payments = () => {
 
   const handleBuy = async () => {
     try {
-      const response = await fetch('https://localhost:8080/order', {
+      const response = await fetch('http://localhost:8080/order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
