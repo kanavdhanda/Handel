@@ -1,0 +1,43 @@
+package handlers
+
+import (
+	"context"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/mongo"
+	"golang.org/x/crypto/bcrypt"
+)
+
+type SignupData struct {
+	Name     string `json:"name"`
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
+	Phone    string `json:"phone"`
+}
+
+func SignUpHandler(c *gin.Context, client *mongo.Client, databaseName, collectionName string) {
+	var signupData SignupData
+	if err := c.ShouldBindJSON(&signupData); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	hashedPassword, err2 := bcrypt.GenerateFromPassword([]byte(signupData.Password), bcrypt.DefaultCost)
+	if err2 != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to hash password"})
+		return
+	}
+	signupData.Password = string(hashedPassword)
+
+	collection := client.Database(databaseName).Collection(collectionName)
+	_, err := collection.InsertOne(context.TODO(), signupData)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to insert data"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "signup success",
+		"data":    signupData,
+	})
+}

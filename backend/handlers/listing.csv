@@ -1,0 +1,10 @@
+"*Channel Name","Product Name","*SKU Code","Selling Price","Weight","Dimensions","Errors"
+"CUSTOM","test","test123","34","0.5","10x10x10",""
+"CUSTOM","wonderwoman","ww1234","43","0.5","10x10x10",""
+"CUSTOM","superman","sup1234","34","0.5","10x10x10",""
+"CUSTOM","Batman","bat1234","34","0.5","10x10x10",""
+"CUSTOM","ref","32f","0","0","0x0x0",""
+CUSTOM,foot,f433,"0",2,10x10x10,""
+CUSTOM,rv,efw43,0,3,10x10x10,
+CUSTOM,yo,yo123,0,3,10x10x10,
+CUSTOM,hello,rev2,0,3,10x10x10,
