@@ -12,7 +12,8 @@ import AddNew from './pages/Dashboard/AddNew'
 import Products from './pages/Products/Products'
 import ShippingDoc from './pages/Dashboard/ShippingDoc'
 
-import Payment from './pages/Products/Payments'
+import Payments from './pages/Products/Payments'
+
 const App = () => {
   return (
     <Router>
@@ -28,7 +29,7 @@ const App = () => {
         <Route path="/addprod" element={<AddNew />} />
         <Route path="/shippingdoc" element={<ShippingDoc />} />
 
-        <Route path="/payment" elenennt={<Payment/>}/>
+        <Route path="/payment" element={<Payments />} />
         <Route path='*' element={<h1>Not Found</h1>} />
       </Routes>
     </Router>
