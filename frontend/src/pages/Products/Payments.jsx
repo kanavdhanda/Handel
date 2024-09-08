@@ -8,29 +8,47 @@ const Payments = () => {
   // Access the single product passed via state from the Modal
   const product = location.state;
 
-  const handleBuy = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          product: product,  // Send the single product object
-        }),
-      });
+  // const handleBuy = async () => {
+  //   try {
+  //     const response = await fetch('https://localhost:8080/order', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         product: product,  // Send the single product object
+  //       }),
+  //     });
 
-      if (response.ok) {
-        const result = await response.json();
-        alert('Cart sent successful!');  // Show success message
+  //     if (response.ok) {
+  //       const result = await response.json();
+  //       alert('Cart sent successful!');  // Show success message
        
-      } else {
-        alert('Payment failed. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error during payment:', error);
-      alert('An error occurred. Please try again.');
-    }
+  //     } else {
+  //       alert('Payment failed. Please try again.');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error during payment:', error);
+  //     alert('An error occurred. Please try again.');
+  //   }
+  // };
+
+
+  const [response, setResponse] = React.useState([]);
+
+  const dataLao = async () => {
+    const response = await fetch("http://localhost:8080/getprod");
+    const data = await response.json();
+    setResponse(data.data);
+  };
+
+  React.useEffect(() => {
+    dataLao();
+  }, []);
+
+  // Handle order button click
+  const handleOrder = (product) => {
+    navigate('/order', { state: { product } });
   };
 
   if (!product) {
@@ -40,7 +58,6 @@ const Payments = () => {
   return (
     <div className="p-8">
       <h1 className="text-3xl font-bold mb-4">Your Cart</h1>
-
       <div className="bg-white p-6 rounded-lg shadow-md">
         <div className="border-b pb-4 flex justify-between items-center">
           <div>
@@ -57,8 +74,8 @@ const Payments = () => {
 
         <div className="mt-8">
           <button 
-            onClick={handleBuy} 
-            className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors duration-300"
+            onClick={() => handleOrder(product)} 
+            className="bg-amber-900 text-white px-10 py-2 border-white hover:bg-white hover:text-amber-950 hover:border-amber-950 border-2 mt-2 transition-colors duration-300 rounded-lg"
           >
             Buy Now
           </button>

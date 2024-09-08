@@ -106,6 +106,7 @@ func main() {
 	router.POST("/addprod", handlers.AddProd)
 	router.GET("/getprod", handlers.GetProd)
 	router.POST("/addlist", handlers.Listhandler)
+	router.POST("/order", handlers.Createorderhandler)
 	router.Run(":8080")
 }
 
