@@ -4,6 +4,7 @@ import NavigationBar from '../../components/Navbar/NavigationBar'
 import CardSection from '../../components/Section/CardSection'
 import Footer from '../../components/Footer/Footer'
 import { Link } from 'react-router-dom'
+import CategoryCard from '../../components/Cards/CategoryCard'
 
 const  Home = () => {
   return (
@@ -29,11 +30,25 @@ const  Home = () => {
             </div>
         </div>
       </div>
+      
       <div className='flex flex-col  justify-center items-center w-full h-[80vh]'>
         <h1 className='mb-10 text-5xl font-serif text-gray-600'>Get organic content from all over the world</h1>
         <img src={'./world_map.png'} alt="" />
       </div>
-      <div className='bg-amber-200 bg-opacity-80 flex justify-center items-center w-full h-[50vh]'>
+      
+      <div className='flex flex-col  justify-center items-center w-full h-[105vh] bg-[#fff0e0]'>
+        <h1 className='mb-10 text-3xl font-serif text-gray-600'>Shop By Category</h1>
+        <div className="grid grid-cols-3 w-[80%] justify-center items-center place-items-center">
+            <CategoryCard/>
+            <CategoryCard/>
+            <CategoryCard/>
+            <CategoryCard/>
+            <CategoryCard/>
+            <CategoryCard/>
+        </div>
+      </div>
+
+      <div className='bg-amber-100 bg-opacity-80 flex justify-center items-center w-full h-[60vh]'>
         <div className="grid mx-40 gap-10 grid-cols-2 items-center">
             <div className="">
                 <h1 className='text-4xl font-serif mb-5'>We do this</h1>
