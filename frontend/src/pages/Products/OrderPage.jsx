@@ -92,111 +92,122 @@ const OrderPage = () => {
   };
 
   return (
-    <div className='container'>
-      <h2>Order Form</h2>
+  <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-5">
+    <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">Complete Your Order</h2>
 
-      {/* Display selected product details */}
-      <div className="product-details">
-        <p><strong>Product:</strong> {product.name}</p>
-        <p><strong>Price:</strong> ₹{product.price}</p>
-      </div>
+    {/* Display selected product details */}
+    <div className="product-details bg-gray-100 p-4 rounded-lg mb-6">
+      <p className="text-lg font-medium text-gray-700">
+        <strong>Product Name:</strong> {product.name || 'N/A'}
+      </p>
+      <p className="text-lg font-medium text-gray-700">
+        <strong>Price:</strong> ₹{product.price || 'N/A'}
+      </p>
+    </div>
 
-      {/* Order form */}
-      <form onSubmit={handleOrderSubmit}>
+    {/* Order form */}
+    <form onSubmit={handleOrderSubmit} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <input
-          type='text'
-          name='billing_customer_name'
-          placeholder='Customer Name'
+          type="text"
+          name="billing_customer_name"
+          placeholder="First Name"
           value={billingDetails.billing_customer_name}
           onChange={handleChange}
-          className='border p-2 mb-2 w-full'
+          className="border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
         <input
-          type='text'
-          name='billing_last_name'
-          placeholder='last name'
+          type="text"
+          name="billing_last_name"
+          placeholder="Last Name"
           value={billingDetails.billing_last_name}
           onChange={handleChange}
-          className='border p-2 mb-2 w-full'
+          className="border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
-        <input
-          type='text'
-          name='billing_address'
-          placeholder='Address'
-          value={billingDetails.billing_address}
-          onChange={handleChange}
-          className='border p-2 mb-2 w-full'
-          required
-        />
+      </div>
 
+      <input
+        type="text"
+        name="billing_address"
+        placeholder="Address"
+        value={billingDetails.billing_address}
+        onChange={handleChange}
+        className="border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        required
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <input
-          type='text'
-          name='billing_city'
-          placeholder='City'
+          type="text"
+          name="billing_city"
+          placeholder="City"
           value={billingDetails.billing_city}
           onChange={handleChange}
-          className='border p-2 mb-2 w-full'
+          className="border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
-
         <input
-          type='text'
-          name='billing_pincode'
-          placeholder='Pincode'
+          type="text"
+          name="billing_pincode"
+          placeholder="Pincode"
           value={billingDetails.billing_pincode}
           onChange={handleChange}
-          className='border p-2 mb-2 w-full'
+          className="border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
+      </div>
 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <input
-          type='text'
-          name='billing_state'
-          placeholder='State'
+          type="text"
+          name="billing_state"
+          placeholder="State"
           value={billingDetails.billing_state}
           onChange={handleChange}
-          className='border p-2 mb-2 w-full'
+          className="border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
-
         <input
-          type='text'
-          name='billing_country'
-          placeholder='Country'
+          type="text"
+          name="billing_country"
+          placeholder="Country"
           value={billingDetails.billing_country}
           onChange={handleChange}
-          className='border p-2 mb-2 w-full'
+          className="border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
+      </div>
 
-        <input
-          type='email'
-          name='billing_email'
-          placeholder='Email'
-          value={billingDetails.billing_email}
-          onChange={handleChange}
-          className='border p-2 mb-2 w-full'
-          required
-        />
+      <input
+        type="email"
+        name="billing_email"
+        placeholder="Email"
+        value={billingDetails.billing_email}
+        onChange={handleChange}
+        className="border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        required
+      />
 
-        <input
-          type='text'
-          name='billing_phone'
-          placeholder='Phone Number'
-          value={billingDetails.billing_phone}
-          onChange={handleChange}
-          className='border p-2 mb-2 w-full'
-          required
-        />
+      <input
+        type="text"
+        name="billing_phone"
+        placeholder="Phone Number"
+        value={billingDetails.billing_phone}
+        onChange={handleChange}
+        className="border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+        required
+      />
 
-        <button type='submit' className='bg-blue-600 text-white px-4 py-2 mt-2 rounded-lg'>
-          Place Order
-        </button>
-      </form>
-    </div>
-  );
-};
+      <button
+        type="submit"
+        className="w-full bg-amber-800 text-white py-3 rounded-lg hover:border-2 hover:bg-white hover:text-amber-900 hover:border-amber-700 transition-all duration-300"
+      >
+        Place Order
+      </button>
+    </form>
+  </div>
+);}
 
 export default OrderPage;
