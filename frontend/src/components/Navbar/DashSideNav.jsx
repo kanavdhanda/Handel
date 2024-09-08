@@ -22,7 +22,7 @@ const DashSideNav = () => {
           Add New Product
         </NavLink>
         <NavLink 
-          to="/settings" 
+          to="/proddocs" 
           className="py-4 px-12 hover:bg-gray-200 transition-colors"
           activeClassName="bg-gray-700"
         >

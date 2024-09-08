@@ -15,6 +15,8 @@ import PaymentRec from './pages/Dashboard/PaymentRec'
 import Payments from './pages/Products/Payments'
 import OrderPage from './pages/Products/OrderPage'
 
+import ProdDocs from './pages/Dashboard/prodDocs'
+
 const App = () => {
   return (
     <Router>
@@ -34,6 +36,7 @@ const App = () => {
         <Route path="/payment" element={<Payments />} />
         <Route path='*' element={<h1>Not Found</h1>} />
         <Route path="/order" element={<OrderPage/>} />
+        <Route path="/proddocs" element={<ProdDocs/>} />
       </Routes>
     </Router>
   )
