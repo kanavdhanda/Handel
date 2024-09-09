@@ -7,6 +7,13 @@ function ProductForm() {
   const [type, setType] = useState('');
   const [qty, setQty] = useState('');
   const [sku, setSku] = useState('');
+  const [mrp, setMrp] = useState('');
+  const [length, setLength] = useState('');
+  const [width, setWidth] = useState('');
+  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState('');
+  const [hsn, setHsn] = useState('');
+  //const [taxCode, setTaxCode] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -14,7 +21,7 @@ function ProductForm() {
     e.preventDefault();
 
     // Check if any fields are empty
-    if (!name || !categoryCode || !type || !qty || !sku) {
+    if (!name || !categoryCode || !type || !qty || !sku || !mrp || !width || !height || !weight || !length) {
       setMessage('Please fill in all fields.');
       return;
     }
@@ -26,12 +33,19 @@ function ProductForm() {
       type,
       qty,
       sku,
+      mrp,
       description,
+      length,
+      width,
+      hsn,
+      //tax_code: taxCode,
+      height,
+      weight
     };
 
     try {
       setLoading(true); // Start loading
-      const response = await fetch('http://localhost:8080/addprod', {
+      const response = await fetch('http://172.16.130.72/:8080/addprod', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,14 +56,14 @@ function ProductForm() {
       // Handle the response
       if (!response.ok) {
         const errorData = await response.json();
-        setMessage(`Error: ${errorData.error || 'Product Successfully added'}`);
+        setMessage(`Error: ${errorData.error || 'Product not added'}`);
       } else {
         const data = await response.json();
         setMessage(`Success: ${data.message}`);
       }
     } catch (error) {
       console.error('Error:', error);
-      setMessage('Product Successfully added');
+      setMessage('Error adding product');
     } finally {
       setLoading(false); // End loading
     }
@@ -126,6 +140,78 @@ function ProductForm() {
               type="text"
               value={sku}
               onChange={(e) => setSku(e.target.value)}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label className="block font-medium text-gray-700">
+            MRP:
+            <input
+              type="text"
+              value={mrp}
+              onChange={(e) => setMrp(e.target.value)}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label className="block font-medium text-gray-700">
+            Length:
+            <input
+              type="text"
+              value={length}
+              onChange={(e) => setLength(e.target.value)}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label className="block font-medium text-gray-700">
+            Width:
+            <input
+              type="text"
+              value={width}
+              onChange={(e) => setWidth(e.target.value)}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label className="block font-medium text-gray-700">
+            Height:
+            <input
+              type="text"
+              value={height}
+              onChange={(e) => setHeight(e.target.value)}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label className="block font-medium text-gray-700">
+            Weight:
+            <input
+              type="text"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label className="block font-medium text-gray-700">
+            HSN:
+            <input
+              type="text"
+              value={hsn}
+              onChange={(e) => setHsn(e.target.value)}
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
               required
             />
