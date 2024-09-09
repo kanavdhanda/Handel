@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 
 const DashSideNav = () => {
   return (
-    <div className="w-[300px] h-screen bg-white shadow-lg text-slate-600 flex flex-col font-medium ">
+    <div className="w-[300px] min-h-screen bg-white shadow-lg text-slate-600 flex flex-col font-medium ">
       <div className="p-3">
       </div>
       <nav className="flex flex-col flex-grow">

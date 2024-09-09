@@ -29,9 +29,9 @@ const Navbar = () => {
             handleSearch={handleSearch}
             onClearSearch={onClearSearch}
           />
-          <div className="flex gap-4">
-            <Link to="/dashboard" className='rounded-xl bg-slate-800 text-white px-6 py-2 text-sm hover:text-slate-800 hover:bg-white transition-all border-2 border-slate-800'>Manfacture</Link>
-            <button className='text-sm text-slate-500'>Become a seller </button>
+          <div className="flex gap-4 items-center">
+            <Link to="/sellerhome" className='rounded-xl bg-slate-800 text-white px-6 py-2 text-sm hover:text-slate-800 hover:bg-white transition-all border-2 border-slate-800'>Manfacture</Link>
+            <Link to='/signup' className='text-sm text-slate-500'>Become a seller </Link>
           </div>
 
     </div>

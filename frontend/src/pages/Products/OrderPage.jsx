@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+// import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 const OrderPage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const product = state?.product;
+
+  const productPrice = product?.price || 100;
+  const productName = product?.name || 'Unknown Product';
 
   const [billingDetails, setBillingDetails] = useState({
     billing_customer_name: '',
@@ -36,61 +40,81 @@ const OrderPage = () => {
       .toString()
       .padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}`;
   };
-
-  // Handle form submission (place order)
   const handleOrderSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent form reload
 
-    const orderDetails = {
-      order_id: generateOrderId(),
-      order_date: new Date().toISOString(),
-      pickup_location: 'Primary',
-      billing_customer_name: billingDetails.billing_customer_name,
-      billing_last_name: billingDetails.billing_last_name,
-      billing_address: billingDetails.billing_address,
-      billing_city: billingDetails.billing_city,
-      billing_pincode: billingDetails.billing_pincode,
-      billing_state: billingDetails.billing_state,
-      billing_country: billingDetails.billing_country,
-      billing_email: billingDetails.billing_email,
-      billing_phone: billingDetails.billing_phone,
-      shipping_is_billing: true,
-      order_items: [
-        {
-          name: product.name,
-          sku: '32f3',
-          units: 1,
-          selling_price: product.selling_price || 100,  // Ensure it has a valid value
-        },
-      ],
-      payment_method: 'COD',
-      sub_total: product.selling_price || 100,
-      length: 10,
-      breadth: 10,
-      height: 10,
-      weight: 2.5,
-    };
+    if (!product || !product.sku) {
+      alert('Product information is missing.');
+      return;
+    }
 
+    // Fetch product details ${product.sku}
     try {
-      const res = await fetch('http://localhost:8080/order', {
-        method: 'POST',
+      const res = await fetch(`https://apiv2.shiprocket.in/v1/external/products`, {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUwNTY4NzQsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzI1OTk2MDYxLCJqdGkiOiJlOVNFWlFqZWFIY1dra0drIiwiaWF0IjoxNzI1MTMyMDYxLCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTcyNTEzMjA2MSwiY2lkIjo0ODczOTI3LCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.0nCQkx_o7Mj48ssbE3EbnCPl_AItWswsTZ9oKQmg9UU',
         },
-        body: JSON.stringify(orderDetails),
       });
 
       if (res.ok) {
-        alert('Order placed successfully');
-        navigate('/');  // Navigate back to product page or another page
+        const data = await res.json();
+        const fetchedProduct = data.data.find((p) => p.sku === product.sku);
+        const sellingPrice = fetchedProduct?.mrp !== 0 ? parseFloat(fetchedProduct.mrp) : 100;
+        const hsn = fetchedProduct?.hsn !== 0 ? parseInt(fetchedProduct.hsn) : 100;
+
+        const orderDetails = {
+          order_id: generateOrderId(),
+          order_date: new Date().toISOString(),
+          pickup_location: 'Primary',
+          billing_customer_name: billingDetails.billing_customer_name,
+          billing_last_name: billingDetails.billing_last_name,
+          billing_address: billingDetails.billing_address,
+          billing_city: billingDetails.billing_city,
+          billing_pincode: parseInt(billingDetails.billing_pincode),
+          billing_state: billingDetails.billing_state,
+          billing_country: billingDetails.billing_country,
+          billing_email: billingDetails.billing_email,
+          billing_phone: parseInt(billingDetails.billing_phone),
+          shipping_is_billing: true,
+          order_items: [
+            {
+              name: product.name,
+              sku: product.sku,
+              units: 1,
+              selling_price: sellingPrice || 100,
+            },
+          ],
+          payment_method: 'Prepaid',
+          sub_total: sellingPrice || 100,
+          length: parseFloat(product.length) || 2.0,
+          breadth: parseFloat(product.breadth) || 2.0,
+          height: parseFloat(product.height) || 2.0,
+          weight: parseFloat(product.weight) || 2.0,// Converted from "0.5 Kg" to float
+          hsn: parseInt(product.hsn),
+        };
+
+        const orderRes = await fetch('http://localhost:8080/order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(orderDetails),
+        });
+
+        if (orderRes.ok) {
+          alert('Order placed successfully');
+          navigate('/');
+        } else {
+          alert('Error placing order');
+        }
       } else {
-        alert('Error placing order');
+        alert('Error fetching product details');
       }
     } catch (error) {
       console.error('Error placing order:', error);
-    }
-  };
-
+    }};
   return (
   <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-5">
     <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">Complete Your Order</h2>
