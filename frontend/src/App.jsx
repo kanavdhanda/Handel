@@ -14,6 +14,7 @@ import ShippingDoc from './pages/Dashboard/ShippingDoc'
 import PaymentRec from './pages/Dashboard/PaymentRec'
 import Payments from './pages/Products/Payments'
 import OrderPage from './pages/Products/OrderPage'
+import SellerHome from './pages/Seller/SellerHome'
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/addprod" element={<AddNew />} />
         <Route path="/shippingdoc" element={<ShippingDoc />} />
         <Route path="/paymentrec" element={<PaymentRec />} />
+        <Route path="/sellerhome" element={<SellerHome />} />
 
         <Route path="/payment" element={<Payments />} />
         <Route path='*' element={<h1>Not Found</h1>} />
