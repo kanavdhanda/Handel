@@ -11,10 +11,10 @@ import (
 )
 
 type OrderItem struct {
-	Name         string  `json:"name"`
-	SKU          string  `json:"sku"`
-	Units        int     `json:"units"`
-	SellingPrice float64 `json:"selling_price"`
+	Name         string `json:"name"`
+	SKU          string `json:"sku"`
+	Units        int    `json:"units"`
+	SellingPrice int    `json:"selling_price"`
 }
 
 type OrderDetails struct {
@@ -25,19 +25,26 @@ type OrderDetails struct {
 	BillingLastName     string      `json:"billing_last_name"`
 	BillingAddress      string      `json:"billing_address"`
 	BillingCity         string      `json:"billing_city"`
-	BillingPincode      string      `json:"billing_pincode"`
+	BillingPincode      int         `json:"billing_pincode"`
 	BillingState        string      `json:"billing_state"`
 	BillingCountry      string      `json:"billing_country"`
 	BillingEmail        string      `json:"billing_email"`
-	BillingPhone        string      `json:"billing_phone"`
+	BillingPhone        int         `json:"billing_phone"`
 	ShippingIsBilling   bool        `json:"shipping_is_billing"`
 	OrderItems          []OrderItem `json:"order_items"`
 	PaymentMethod       string      `json:"payment_method"`
-	SubTotal            float64     `json:"sub_total"`
+	SubTotal            int         `json:"sub_total"`
 	Length              float64     `json:"length"`
 	Breadth             float64     `json:"breadth"`
 	Height              float64     `json:"height"`
 	Weight              float64     `json:"weight"`
+	// Tax                 int         `json:"tax"`
+	Hsn int `json:"hsn"`
+	// Currency            string      `json:"currency"`
+	// Reasonofexport      int         `json:"reasonOfExport"`
+	// Termsofinvoice      string      `json:"TermsOfInvoice"`
+	// Ioss                string      `json:"ioss"`
+	// Eori                string      `json:"eori"`
 }
 
 func Createorderhandler(c *gin.Context) {

@@ -20,6 +20,13 @@ type Prod struct {
 	Qty           string `json:"qty"`
 	Sku           string `json:"sku"`
 	Description   string `json:"description"`
+	MRP           string `json:"mrp"`
+	Length        string `json:"length"`
+	Width         string `json:"width"`
+	Height        string `json:"height"`
+	Weight        string `json:"weight"`
+	HSN           string `json:"hsn"`
+	//Tax_code      string `json:"tax_code"`
 }
 
 func AddProd(c *gin.Context) {
@@ -65,7 +72,7 @@ func AddProd(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Product added successfully", "response": string(body)})
-	file, err := os.OpenFile("C:/Users/Sarthak/handel/backend/handlers/listing.csv", os.O_APPEND, 0644)
+	file, err := os.OpenFile("/Users/kanavdhanda/work/handel-1/backend/handlers/listing.csv", os.O_APPEND, 0644)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open file"})
 		return
