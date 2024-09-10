@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 function ProductForm() {
   const [name, setName] = useState('');
@@ -27,25 +27,25 @@ function ProductForm() {
     }
 
     // Prepare the product data to be sent
-    const productData = {
-      name,
-      category_code: categoryCode,
-      type,
-      qty,
-      sku,
-      mrp,
-      description,
-      length,
-      width,
-      hsn,
-      //tax_code: taxCode,
-      height,
-      weight
-    };
-
     try {
+      const productData = {
+        name,
+        category_code: categoryCode,
+        type,
+        qty,
+        sku,
+        mrp,
+        description,
+        length,
+        width,
+        hsn,
+        //tax_code: taxCode,
+        height,
+        weight
+      };
+      console.log(productData);
       setLoading(true); // Start loading
-      const response = await fetch('http://172.16.130.72/:8080/addprod', {
+      const response = await fetch('http://localhost:8080/addprod', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

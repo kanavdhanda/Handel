@@ -6,7 +6,7 @@ const Cart = ({ item }) => {
           <h2 className='text-lg font-bold'>{item.name}</h2>
           <p className='text-gray-600'>{item.description}</p>
           <div className='text-right mt-2'>
-            <span className='text-xl font-semibold'>${item.price}</span>
+            <span className='text-xl font-semibold'>${item.mrp}</span>
           </div>
         </div>
       </div>

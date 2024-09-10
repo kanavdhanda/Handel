@@ -7,32 +7,8 @@ const Payments = () => {
   
   // Access the single product passed via state from the Modal
   const product = location.state;
-
-  // const handleBuy = async () => {
-  //   try {
-  //     const response = await fetch('https://localhost:8080/order', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         product: product,  // Send the single product object
-  //       }),
-  //     });
-
-  //     if (response.ok) {
-  //       const result = await response.json();
-  //       alert('Cart sent successful!');  // Show success message
-       
-  //     } else {
-  //       alert('Payment failed. Please try again.');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error during payment:', error);
-  //     alert('An error occurred. Please try again.');
-  //   }
-  // };
-
+  const [quantity,setQuantity] = React.useState(1);
+  const [price, setPrice] = React.useState(product.mrp);
 
   const [response, setResponse] = React.useState([]);
 
@@ -48,9 +24,32 @@ const Payments = () => {
 
   // Handle order button click
   const handleOrder = (product) => {
+    product.quantity = quantity;
+    product.mrp = price;
     navigate('/order', { state: { product } });
   };
-
+  
+  const handleQty = (value) => {
+    if (value) {
+      if (quantity >= product.quantity) {
+        alert("Cannot add more than available quantity.");
+      } else {
+        setQuantity(prevQuantity => {
+          const newQuantity = prevQuantity + 1;
+          setPrice(product.mrp * newQuantity);
+          return newQuantity;
+        });
+      }
+    } else {
+      if (quantity > 1) {
+        setQuantity(prevQuantity => {
+          const newQuantity = prevQuantity - 1;
+          setPrice(product.mrp * newQuantity);
+          return newQuantity;
+        });
+      }
+    }
+  }
   if (!product) {
     return <p>Your cart is empty.</p>;
   }
@@ -63,13 +62,24 @@ const Payments = () => {
           <div>
             <h2 className="text-xl font-semibold">{product.name}</h2>
             <p className="text-gray-600">{product.description}</p>
-            <p className="text-lg font-semibold text-gray-800">Price: ${product.price}</p>
+            <p className="text-lg font-semibold text-gray-800">Price Per item: ${product.mrp}</p>
+            <p className="text-lg font-semibold text-gray-800">Order Total: ${price}</p>
           </div>
           <img 
             src={product.image || './trial.jpg'}
             alt={product.name}
             className="w-16 h-16 rounded-lg object-cover"
           />
+          <div className="">
+              <p className="font-semibold">Quantity</p>
+            <div className="flex flex-row gap-4">
+            <input type="number" className="bg-gray-100 px-4" readOnly value={quantity}></input>
+          <div className="hover:cursor-pointer bg-gray-100 px-4 py-1 rounded-md" onClick={()=>handleQty(true)}>+</div>
+          <div className="hover:cursor-pointer bg-gray-100 px-4 py-1 rounded-md" onClick={()=>handleQty(false) }>-</div>
+            </div>
+         
+          </div>
+          
         </div>
 
         <div className="mt-8">

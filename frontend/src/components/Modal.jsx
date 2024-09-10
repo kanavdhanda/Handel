@@ -31,7 +31,7 @@ const Modal = ({ product, onClose }) => {
           <div className="w-full md:w-[60%]">
             <h2 className="text-2xl font-bold mb-1 text-gray-800">{product.name}</h2>
             <p className="text-gray-600 mb-4">{product.description}</p>
-            <p className="text-lg font-semibold text-gray-700 mb-2"><strong>Price:</strong> ${product.price}</p>
+            <p className="text-lg font-semibold text-gray-700 mb-2"><strong>Price:</strong> ${product.mrp}</p>
             
 
             <button onClick={handlePurchase} className='bg-amber-900 text-white px-10 py-2 border-white hover:bg-white hover:text-amber-950 hover:border-amber-950 border-2 mt-2 transition-colors duration-300 rounded-lg'>Buy Now</button>

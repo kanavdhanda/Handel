@@ -1,15 +1,39 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-// import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
+
+import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 const OrderPage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const product = state?.product;
+  function parseDimensions(dimensions) {
+    // Remove the "cm" part and split by " x "
+    const [length, breadth, height] = dimensions.replace(' cm', '').split(' x ').map(Number);
+    
+    return {
+      length,
+      breadth,
+      height
+    };
+  }
+  
+  // Example usage
+  const parsedDimensions = parseDimensions(product.dimensions);
+  product.length = parsedDimensions.length;
+  product.height = parsedDimensions.height;
+  product.breadth = parsedDimensions.breadth;
+  // console.log(parsedDimensions); // { length: 42, breadth: 42, height: 42 }
 
-  const productPrice = product?.price || 100;
-  const productName = product?.name || 'Unknown Product';
-
+  // product.length = 
+  const productPrice = product.mrp;
+  // console.log(product);
+  const productName = product?.name;
+  
+  
+  // Example usage
+  // const parsedDimensions = parseDimensions(dimensions);
+  // console.log(parsedDimensions); // { length: 42, breadth: 42, height: 42 }
   const [billingDetails, setBillingDetails] = useState({
     billing_customer_name: '',
     billing_last_name: '',
@@ -21,7 +45,7 @@ const OrderPage = () => {
     billing_email: '',
     billing_phone: '',
   });
-
+  const formValid = Object.values(billingDetails).every((val) => val.trim() !== '');
   // Handle form input changes
   const handleChange = (e) => {
     setBillingDetails({
@@ -101,8 +125,7 @@ const OrderPage = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(orderDetails),
-        });
-
+        }); 
         if (orderRes.ok) {
           alert('Order placed successfully');
           navigate('/');
@@ -125,7 +148,7 @@ const OrderPage = () => {
         <strong>Product Name:</strong> {product.name || 'N/A'}
       </p>
       <p className="text-lg font-medium text-gray-700">
-        <strong>Price:</strong> ₹{product.price || 'N/A'}
+        <strong>Price:</strong> ${product.mrp || 'N/A'}
       </p>
     </div>
 
@@ -224,12 +247,40 @@ const OrderPage = () => {
         required
       />
 
-      <button
+      {/* <button
         type="submit"
         className="w-full bg-amber-800 text-white py-3 rounded-lg hover:border-2 hover:bg-white hover:text-amber-900 hover:border-amber-700 transition-all duration-300"
       >
         Place Order
-      </button>
+      </button> */}
+      {!formValid && <p className="text-red-500">Please fill all the fields to proceed</p>}
+      {formValid && <PayPalScriptProvider options={{ "client-id": "AR02Lr1koiZV9rdSvF90JJSrI8S1gMd0FVURtZ2Bd4IfBGUmTiXu8HSG07kj2vrnPSI-jOcfbUBww8Bw" }}>
+          <PayPalButtons
+            createOrder={(data, actions) => {
+              if (productPrice <= 0) {
+                console.error('Invalid product price');
+                return;
+              }
+              return actions.order.create({
+                purchase_units: [
+                  {
+                    amount: { value: productPrice.toString() },
+                  },
+                ],
+              });
+            }}
+            onApprove={(data, actions) => {
+              return actions.order.capture().then(() => {
+                handleOrderSubmit(); // Call after successful paymentx
+              });
+            }}
+            onError={(err) => {
+              console.error('PayPal Checkout onError', err);
+              alert('There was an error with PayPal. Please try again.');
+            }}
+          />
+        </PayPalScriptProvider>}
+      
     </form>
   </div>
 );}

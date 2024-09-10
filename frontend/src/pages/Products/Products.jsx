@@ -9,7 +9,7 @@ export default function Products() {
   const [selectedProduct, setSelectedProduct] = React.useState(null);  // To store the selected product
 
   const dataLao = async () => {
-    const response = await fetch('http://172.16.130.72:8080/getprod');
+    const response = await fetch('http://localhost:8080/getprod');
     const data = await response.json();
     const final = data.data;
     setResponse(final);
