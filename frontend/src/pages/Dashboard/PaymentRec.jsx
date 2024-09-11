@@ -9,7 +9,7 @@ const PaymentRec = () => {
         <div className="relative">
         <DashTopNav className='absolute top-0' />
         <DashSideNav className='absolute top-0' />
-        <div className="ml-[20vw] mt-[20vh] absolute top-0"><div>
+        <div className="ml-[23vw] mt-[20vh] absolute top-0"><div>
             <img src="./payment.webp" className='grayscale' alt="" />
             <h4 className='text-[13px]'>Export in India is subject to several compliances as stipulated under the Foreign Exchange Management Act 1999, Foreign Exchange Management (Current Account Transactions) Rules, 2000, and the Foreign Exchange Management (Export of Goods and Services) Regulations, 2015. Such compliances are required to be adhered by every exporter in India.</h4>
             <h2 className='my-5 font-semibold text-[15px]'>Repatriation and Realization of Export proceeds:</h2>

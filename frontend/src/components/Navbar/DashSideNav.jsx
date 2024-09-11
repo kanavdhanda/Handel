@@ -15,12 +15,13 @@ const DashSideNav = () => {
           Home
         </NavLink>
         <NavLink 
-          to="/addprod" 
+          to="/exportreg" 
           className="py-4 px-12 hover:bg-gray-200 transition-colors"
           activeClassName="bg-gray-700"
         >
-          Add New Product
+          Export Registration
         </NavLink>
+        
         <NavLink 
           to="/proddocs" 
           className="py-4 px-12 hover:bg-gray-200 transition-colors"
@@ -43,18 +44,11 @@ const DashSideNav = () => {
           Payment Reconcilation
         </NavLink>
         <NavLink 
-          to="/settings" 
+          to="/addprod" 
           className="py-4 px-12 hover:bg-gray-200 transition-colors"
           activeClassName="bg-gray-700"
         >
-          Tax Documentation
-        </NavLink>
-        <NavLink 
-          to="/settings" 
-          className="py-4 px-12 hover:bg-gray-200 transition-colors"
-          activeClassName="bg-gray-700"
-        >
-          Global Export News
+          Add New Product
         </NavLink>
       </nav>
     </div>

@@ -17,6 +17,7 @@ import OrderPage from './pages/Products/OrderPage'
 import SellerHome from './pages/Seller/SellerHome'
 
 import ProdDocs from './pages/Dashboard/prodDocs'
+import ExportRegistration from './pages/Dashboard/ExportRegistration'
 
 const App = () => {
   return (
@@ -39,6 +40,7 @@ const App = () => {
         <Route path='*' element={<h1>Not Found</h1>} />
         <Route path="/order" element={<OrderPage/>} />
         <Route path="/proddocs" element={<ProdDocs/>} />
+        <Route path="/exportreg" element={<ExportRegistration/>} />
       </Routes>
     </Router>
   )
