@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"bytes"
+	"context"
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
@@ -9,48 +10,68 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Prod struct {
-	Name          string `json:"name"`
-	Category_code string `json:"category_code"`
-	Type          string `json:"type"`
-	Qty           string `json:"qty"`
-	Sku           string `json:"sku"`
-	Description   string `json:"description"`
-	MRP           string `json:"mrp"`
-	Length        string `json:"length"`
-	Width         string `json:"width"`
-	Height        string `json:"height"`
-	Weight        string `json:"weight"`
-	HSN           string `json:"hsn"`
-	//Tax_code      string `json:"tax_code"`
+	SellerID     string `json:"sellerid" bson:"sellerid"`
+	Name         string `json:"name" bson:"name"`
+	CategoryCode string `json:"category_code" bson:"category_code"`
+	Type         string `json:"type" bson:"type"`
+	Qty          string `json:"qty" bson:"qty"`
+	Sku          string `json:"sku" bson:"sku"`
+	Description  string `json:"description" bson:"description"`
+	MRP          string `json:"mrp" bson:"mrp"`
+	Length       string `json:"length" bson:"length"`
+	Width        string `json:"width" bson:"width"`
+	Height       string `json:"height" bson:"height"`
+	Weight       string `json:"weight" bson:"weight"`
+	HSN          string `json:"hsn" bson:"hsn"`
+}
+
+func getMongoCollection(collectionName string) (*mongo.Collection, error) {
+	clientOptions := options.Client().ApplyURI("mongodb+srv://aayushgoyaldps:aayushgoyal@backend.8yerq94.mongodb.net/GDSC?retryWrites=true&w=majority&appName=backend") // Replace with your MongoDB URI
+	client, err := mongo.Connect(context.Background(), clientOptions)
+	if err != nil {
+		return nil, err
+	}
+	return client.Database("mydatabase").Collection(collectionName), nil
 }
 
 func AddProd(c *gin.Context) {
-	var newprod Prod
-	//newprod, bind, marshal, request, headers, client, resp, body
-	if err := c.ShouldBindJSON(&newprod); err != nil {
+	var newProd Prod
+	sellerID, ok := c.Get("sellerid")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "SellerID not found"})
+		return
+	}
+	fmt.Println("Retrieved SellerID:", sellerID)
+
+	if err := c.ShouldBindJSON(&newProd); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
 		return
 	}
 
-	proddata, err := json.Marshal(newprod)
+	newProd.SellerID = sellerID.(string)
+
+	prodData, err := json.Marshal(newProd)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to marshal product data"})
 		return
 	}
 
-	req, err := http.NewRequest("POST", "https://apiv2.shiprocket.in/v1/external/products", bytes.NewBuffer(proddata))
+	req, err := http.NewRequest("POST", "https://apiv2.shiprocket.in/v1/external/products", bytes.NewBuffer(prodData))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create request"})
 		return
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUwNTY4NzQsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzI1OTk2MDYxLCJqdGkiOiJlOVNFWlFqZWFIY1dra0drIiwiaWF0IjoxNzI1MTMyMDYxLCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTcyNTEzMjA2MSwiY2lkIjo0ODczOTI3LCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.0nCQkx_o7Mj48ssbE3EbnCPl_AItWswsTZ9oKQmg9UU")
+	req.Header.Set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUwNTY4NzQsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzI2OTAyNDAxLCJqdGkiOiJxQ2RsUlFoS1BxV1VyYzBwIiwiaWF0IjoxNzI2MDM4NDAxLCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTcyNjAzODQwMSwiY2lkIjo0ODczOTI3LCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.KLtGx42EWGLYUFNIwMeqh0W1gwTXxHngsuQKKhouQuo") // Replace with actual API key
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -71,17 +92,33 @@ func AddProd(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Product added successfully", "response": string(body)})
-	file, err := os.OpenFile("/Users/kanavdhanda/work/handel-1/backend/handlers/listing.csv", os.O_APPEND, 0644)
+	collection, err := getMongoCollection("products")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to connect to MongoDB"})
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	_, err = collection.InsertOne(ctx, newProd)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to insert product into the database"})
+		return
+	}
+	file, err := os.OpenFile("C:/Users/Sarthak/Handel/backend/handlers/listing.csv", os.O_APPEND, 0644)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open file"})
 		return
 	}
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
-	data := []string{"CUSTOM", newprod.Name, newprod.Sku, "0", "3", "10x10x10", ""}
+
+	data := []string{"CUSTOM", newProd.Name, newProd.Sku, "0", "3", "10x10x10", ""}
 	writer.Write(data)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Product added successfully", "sellerid": newProd.SellerID, "response": string(body)})
 }

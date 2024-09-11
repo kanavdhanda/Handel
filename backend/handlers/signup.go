@@ -5,11 +5,13 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type SignupData struct {
+	SellerID string `json:"sellerid"`
 	Name     string `json:"name"`
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required"`
@@ -22,6 +24,9 @@ func SignUpHandler(c *gin.Context, client *mongo.Client, databaseName, collectio
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	sellerID := uuid.New().String()
+	signupData.SellerID = sellerID
 	hashedPassword, err2 := bcrypt.GenerateFromPassword([]byte(signupData.Password), bcrypt.DefaultCost)
 	if err2 != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to hash password"})
