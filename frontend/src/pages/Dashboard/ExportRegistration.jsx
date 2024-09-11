@@ -20,21 +20,21 @@ const ExportRegistration = () => {
                         <p className='text-xs text-gray-600'>The Importer-Exporter Code (IEC) is a key business identification number and is mandatory for exporting or importing in India.</p>
                     </div>
                 </a>
-                <a href='#' className="card flex bg-gray-100 border-2 border-gray-200 p-10 justify-center items-center gap-10">
+                <a href='https://www.icegate.gov.in/guidelines/ad-code-bank-account-registration-advisory' className="card flex bg-gray-100 border-2 border-gray-200 p-10 justify-center items-center gap-10">
                     <h1 className='text-7xl text-gray-300 font-bold'>2</h1>
                     <div className="">
                         <h1 className='text-xl font-semibold text-amber-900 mb-3'>AD CODE</h1>
                         <p className='text-xs text-gray-600'>Authorized dealer (AD) code is a 14 digit unique code allotted to banks dealing in foreign currency by RBI.</p>
                     </div>
                 </a>
-                <a href='#' className="card flex bg-gray-100 border-2 border-gray-200 p-10 justify-center items-center gap-10">
+                <a href='https://www.gst.gov.in/' className="card flex bg-gray-100 border-2 border-gray-200 p-10 justify-center items-center gap-10">
                     <h1 className='text-7xl text-gray-300 font-bold'>3</h1>
                     <div className="">
                         <h1 className='text-xl font-semibold text-amber-900 mb-3'>GST LUT</h1>
                         <p className='text-xs text-gray-600'>Letter of Undertaking (LUT) is a document that exporters can file to export goods or services without having to pay IGST.</p>
                     </div>
                 </a>
-                <a href='#' className="card flex bg-gray-100 border-2 border-gray-200 p-10 justify-center items-center gap-10">
+                <a href='https://www.cbp.gov/sites/default/files/documents/3530-002a_3.pdf' className="card flex bg-gray-100 border-2 border-gray-200 p-10 justify-center items-center gap-10">
                     <h1 className='text-7xl text-gray-300 font-bold'>4</h1>
                     <div className="">
                         <h1 className='text-xl font-semibold text-amber-900 mb-3'>IOR</h1>
