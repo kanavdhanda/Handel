@@ -28,6 +28,7 @@ func LoginHandler(c *gin.Context, client *mongo.Client, databaseName, collection
 	var storedUser struct {
 		Password string `bson:"password"`
 		SellerID string `bson:"sellerid"`
+		Email    string `bson:"email"`
 	}
 	err := collection.FindOne(context.TODO(), bson.M{"email": loginData.Email}).Decode(&storedUser)
 	if err != nil {
@@ -46,6 +47,7 @@ func LoginHandler(c *gin.Context, client *mongo.Client, databaseName, collection
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"message":  "Login successful",
+		"email":    storedUser.Email,
 		"sellerid": storedUser.SellerID,
 	})
 	c.Set("sellerid", storedUser.SellerID)
