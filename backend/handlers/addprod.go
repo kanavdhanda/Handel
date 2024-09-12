@@ -17,7 +17,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type Prod struct {
+type ADDProd struct {
 	SellerID     string `json:"sellerid" bson:"sellerid"`
 	Name         string `json:"name" bson:"name"`
 	CategoryCode string `json:"category_code" bson:"category_code"`
@@ -44,7 +44,7 @@ func getMongoCollection(collectionName string) (*mongo.Collection, error) {
 }
 
 func AddProd(c *gin.Context) {
-	var newProd Prod
+	var newProd ADDProd
 
 	if err := c.ShouldBindJSON(&newProd); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})

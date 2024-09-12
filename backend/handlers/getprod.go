@@ -1,30 +1,64 @@
 package handlers
 
 import (
-	"io"
-	"log"
+	"context"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func GetProd(c *gin.Context) {
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", "https://apiv2.shiprocket.in/v1/external/products", nil)
-	if err != nil {
-		log.Fatalf("Error creating request: %v", err)
-	}
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUwNTY4NzQsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzI2OTAyNDAxLCJqdGkiOiJxQ2RsUlFoS1BxV1VyYzBwIiwiaWF0IjoxNzI2MDM4NDAxLCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTcyNjAzODQwMSwiY2lkIjo0ODczOTI3LCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.KLtGx42EWGLYUFNIwMeqh0W1gwTXxHngsuQKKhouQuo")
+type Prod struct {
+	SellerID     string `json:"sellerid" bson:"sellerid"`
+	Name         string `json:"name" bson:"name"`
+	CategoryCode string `json:"category_code" bson:"category_code"`
+	Type         string `json:"type" bson:"type"`
+	Qty          string `json:"qty" bson:"qty"`
+	Sku          string `json:"sku" bson:"sku"`
+	Description  string `json:"description" bson:"description"`
+	MRP          string `json:"mrp" bson:"mrp"`
+	Length       string `json:"length" bson:"length"`
+	Width        string `json:"width" bson:"width"`
+	Height       string `json:"height" bson:"height"`
+	Weight       string `json:"weight" bson:"weight"`
+	HSN          string `json:"hsn" bson:"hsn"`
+	ImageURL     string `json:"image_url" bson:"image_url"`
+}
 
-	resp, err := client.Do(req)
+func getMongo(collectionName string) (*mongo.Collection, error) {
+	clientOptions := options.Client().ApplyURI("mongodb+srv://aayushgoyaldps:aayushgoyal@backend.8yerq94.mongodb.net/GDSC?retryWrites=true&w=majority&appName=backend") // Replace with your MongoDB URI
+	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
-		log.Fatalf("Error making request: %v", err)
+		return nil, err
 	}
-	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)
+	return client.Database("mydatabase").Collection(collectionName), nil
+}
+
+func GetProd(c *gin.Context) {
+	productCollection, err := getMongo("products")
 	if err != nil {
-		log.Fatalf("Error reading response body: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to connect to MongoDB"})
+		return
 	}
-	c.String(resp.StatusCode, string(body))
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	cursor, err := productCollection.Find(ctx, bson.M{})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch products"})
+		return
+	}
+	defer cursor.Close(ctx)
+
+	var products []Prod
+	if err = cursor.All(ctx, &products); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode products"})
+		return
+	}
+
+	c.JSON(http.StatusOK, products)
 }
