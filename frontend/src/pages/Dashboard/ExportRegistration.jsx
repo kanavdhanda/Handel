@@ -34,7 +34,7 @@ const ExportRegistration = () => {
                         <p className='text-xs text-gray-600'>Letter of Undertaking (LUT) is a document that exporters can file to export goods or services without having to pay IGST.</p>
                     </div>
                 </a>
-                <a href='https://www.cbp.gov/sites/default/files/documents/3530-002a_3.pdf' className="card flex bg-gray-100 border-2 border-gray-200 p-10 justify-center items-center gap-10">
+                <a href='#' className="card flex bg-gray-100 border-2 border-gray-200 p-10 justify-center items-center gap-10">
                     <h1 className='text-7xl text-gray-300 font-bold'>4</h1>
                     <div className="">
                         <h1 className='text-xl font-semibold text-amber-900 mb-3'>IOR</h1>

@@ -15,7 +15,7 @@ const NavigationBar = () => {
             </ul>
         </div>
         <div className="">
-            <Link to='/login'>Login</Link>
+            {/* <Link to='/login'>Login</Link> */}
             {/* <button>icon</button>
             <button>icon</button> */}
         </div>
