@@ -15,7 +15,7 @@ import PaymentRec from './pages/Dashboard/PaymentRec'
 import Payments from './pages/Products/Payments'
 import OrderPage from './pages/Products/OrderPage'
 import SellerHome from './pages/Seller/SellerHome'
-
+import SellerViewer from './components/improve/getseller'
 import ProdDocs from './pages/Dashboard/prodDocs'
 import ExportRegistration from './pages/Dashboard/ExportRegistration'
 
@@ -42,8 +42,8 @@ const App = () => {
         <Route path="/order" element={<OrderPage/>} />
         <Route path="/proddocs" element={<ProdDocs/>} />
         <Route path="/exportreg" element={<ExportRegistration/>} />
+        <Route path="/myproducts" element={<SellerViewer/>} />
 
-        <Route path="/sellerproducts" element={<SellerProducts/>}/>
       </Routes>
     </Router>
   )
