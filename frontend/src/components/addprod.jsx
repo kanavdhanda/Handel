@@ -45,7 +45,7 @@ function ProductForm() {
         height,
         weight,
         sellerid,
-        imgLink
+        image_url: imgLink,
       };
       console.log(productData);
       setLoading(true); // Start loading
