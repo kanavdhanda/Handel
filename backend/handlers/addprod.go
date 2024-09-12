@@ -7,12 +7,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -44,19 +44,38 @@ func getMongoCollection(collectionName string) (*mongo.Collection, error) {
 
 func AddProd(c *gin.Context) {
 	var newProd Prod
-	sellerID, ok := c.Get("sellerid")
-	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "SellerID not found"})
-		return
-	}
-	fmt.Println("Retrieved SellerID:", sellerID)
 
 	if err := c.ShouldBindJSON(&newProd); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
 		return
 	}
 
-	newProd.SellerID = sellerID.(string)
+	userCollection, err := getMongoCollection("users")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to connect to MongoDB"})
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	filter := bson.M{"sellerid": newProd.SellerID}
+	var existingSeller bson.M
+	err = userCollection.FindOne(ctx, filter).Decode(&existingSeller)
+
+	if err == mongo.ErrNoDocuments {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "SellerID does not exist"})
+		return
+	} else if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to query the users collection"})
+		return
+	}
+
+	productCollection, err := getMongoCollection("products")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to connect to MongoDB"})
+		return
+	}
 
 	prodData, err := json.Marshal(newProd)
 	if err != nil {
@@ -71,7 +90,7 @@ func AddProd(c *gin.Context) {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUwNTY4NzQsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzI2OTAyNDAxLCJqdGkiOiJxQ2RsUlFoS1BxV1VyYzBwIiwiaWF0IjoxNzI2MDM4NDAxLCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTcyNjAzODQwMSwiY2lkIjo0ODczOTI3LCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.KLtGx42EWGLYUFNIwMeqh0W1gwTXxHngsuQKKhouQuo") // Replace with actual API key
+	req.Header.Set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUwNTY4NzQsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzI2OTAyNDAxLCJqdGkiOiJxQ2RsUlFoS1BxV1VyYzBwIiwiaWF0IjoxNzI2MDM4NDAxLCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTcyNjAzODQwMSwiY2lkIjo0ODczOTI3LCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.KLtGx42EWGLYUFNIwMeqh0W1gwTXxHngsuQKKhouQuo") // Use your actual API key
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -91,33 +110,24 @@ func AddProd(c *gin.Context) {
 		c.JSON(resp.StatusCode, gin.H{"error": fmt.Sprintf("Failed to add product: %s", string(body))})
 		return
 	}
-
-	collection, err := getMongoCollection("products")
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to connect to MongoDB"})
-		return
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	_, err = collection.InsertOne(ctx, newProd)
+	_, err = productCollection.InsertOne(ctx, newProd)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to insert product into the database"})
 		return
 	}
-	file, err := os.OpenFile("C:/Users/Sarthak/Handel/backend/handlers/listing.csv", os.O_APPEND, 0644)
+	file, err := os.OpenFile("C:/Users/Sarthak/Handel/backend/handlers/listing.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open file"})
 		return
 	}
+	defer file.Close()
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
 
 	data := []string{"CUSTOM", newProd.Name, newProd.Sku, "0", "3", "10x10x10", ""}
-	writer.Write(data)
-	if err != nil {
-		log.Fatal(err)
+	if err := writer.Write(data); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to write to CSV"})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Product added successfully", "sellerid": newProd.SellerID, "response": string(body)})

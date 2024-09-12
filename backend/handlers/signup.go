@@ -35,6 +35,7 @@ func SignUpHandler(c *gin.Context, client *mongo.Client, databaseName, collectio
 	signupData.Password = string(hashedPassword)
 
 	collection := client.Database(databaseName).Collection(collectionName)
+
 	_, err := collection.InsertOne(context.TODO(), signupData)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to insert data"})
