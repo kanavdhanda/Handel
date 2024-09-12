@@ -13,6 +13,7 @@ function ProductForm() {
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [hsn, setHsn] = useState('');
+  const [imgLink, setImgLink] = useState('');
   //const [taxCode, setTaxCode] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -44,6 +45,7 @@ function ProductForm() {
         height,
         weight,
         sellerid,
+        imgLink
       };
       console.log(productData);
       setLoading(true); // Start loading
@@ -214,6 +216,18 @@ function ProductForm() {
               type="text"
               value={hsn}
               onChange={(e) => setHsn(e.target.value)}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label className="block font-medium text-gray-700">
+            Image Link:
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setImgLink(e.target.value)}
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
               required
             />

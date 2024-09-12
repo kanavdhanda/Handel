@@ -23,6 +23,22 @@ const Payments = () => {
   }, []);
 
   // Handle order button click
+  const qtyChange = (e) => {
+    const newQuantity = e.target.value;
+    if (newQuantity === '' || (!isNaN(newQuantity) && parseInt(newQuantity, 10) > 0)) {
+      if (parseInt(newQuantity, 10) > product.quantity) {
+        alert("Cannot add more than available quantity.");
+        // newQuantity = 1;
+        setQuantity(1);
+      } else {
+        setQuantity(newQuantity === '' ? '' : parseInt(newQuantity, 10));
+        if (newQuantity !== '') {
+          setPrice(product.mrp * parseInt(newQuantity, 10));
+        }
+      }
+    }
+  };
+
   const handleOrder = (product) => {
     product.quantity = quantity;
     product.mrp = price;
@@ -73,7 +89,7 @@ const Payments = () => {
           <div className="">
               <p className="font-semibold">Quantity</p>
             <div className="flex flex-row gap-4">
-            <input type="number" className="bg-gray-100 px-4" readOnly value={quantity}></input>
+            <input type="text" className="bg-gray-100 px-4" value={quantity} onChange={qtyChange}></input>
           <div className="hover:cursor-pointer bg-gray-100 px-4 py-1 rounded-md" onClick={()=>handleQty(true)}>+</div>
           <div className="hover:cursor-pointer bg-gray-100 px-4 py-1 rounded-md" onClick={()=>handleQty(false) }>-</div>
             </div>

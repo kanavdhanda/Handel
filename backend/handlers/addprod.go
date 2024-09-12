@@ -115,7 +115,7 @@ func AddProd(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to insert product into the database"})
 		return
 	}
-	file, err := os.OpenFile("C:/Users/Sarthak/Handel/backend/handlers/listing.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	file, err := os.OpenFile("handlers/listing.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open file"})
 		return
