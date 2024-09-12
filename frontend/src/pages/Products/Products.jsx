@@ -12,6 +12,7 @@ export default function Products() {
     const response = await fetch('http://localhost:8080/getprod');
     const data = await response.json();
     const final = data.data;
+     console.log(final);
     setResponse(final);
   };
 

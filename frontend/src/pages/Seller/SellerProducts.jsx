@@ -4,30 +4,42 @@ import NavigationBar from '../../components/Navbar/NavigationBar';
 import MainCard from '../../components/Cards/MainCard';
 import Modal from '../../components/Modal';  // Import the modal component
 import Cookies from 'js-cookie';
-
+import {useEffect} from 'react';
 export default function SellerProducts() {
   const [response, setResponse] = React.useState([]);
   const [selectedProduct, setSelectedProduct] = React.useState(null);  // To store the selected product
 
 const sellerID = Cookies.get('sellerID');
 
-  const dataLao = async () => {
-    const response = await fetch('http://localhost:8080/getprod');
+const dataLao = async () => {
+  try {
+    const response = await fetch('http://localhost:8080/myproducts');
     const data = await response.json();
-    const final = data.data;
-    setResponse(final);
-  };
-  const filterResponse = () => {
-    const filteredResponse = response.filter((item) => item.sellerID === sellerID);
-    // console.log(filteredResponse);
-    setResponse(filteredResponse);
+    setResponse(data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
+const filterResponse = (data) => {
+  const filteredResponse = data.filter((item) => item.sellerid === sellerID);
+  setResponse(filteredResponse);
+};
+
+useEffect(() => {
+  const fetchData = async () => {
+    await dataLao();
   };
 
-  React.useEffect(() => {
-    dataLao().then(() => {
-      filterResponse();
-    });
-  }, []);
+  fetchData();
+}, []);
+
+useEffect(() => {
+  if (response.length > 0) {
+    filterResponse(response);
+  }
+}, [response]); // Ensure filtering is triggered when response is updated
+
 
   return (
     <>
