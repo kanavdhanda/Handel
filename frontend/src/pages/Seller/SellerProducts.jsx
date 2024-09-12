@@ -19,12 +19,14 @@ const sellerID = Cookies.get('sellerID');
   };
   const filterResponse = () => {
     const filteredResponse = response.filter((item) => item.sellerID === sellerID);
+    // console.log(filteredResponse);
     setResponse(filteredResponse);
   };
 
   React.useEffect(() => {
-    dataLao();
-    filterResponse();
+    dataLao().then(() => {
+      filterResponse();
+    });
   }, []);
 
   return (
@@ -48,6 +50,12 @@ const sellerID = Cookies.get('sellerID');
           product={selectedProduct}
           onClose={() => setSelectedProduct(null)}  // Close modal
         />
+      
+      )}
+      {!selectedProduct && (
+        <div className="flex justify-center items-center h-96">
+          <h1 className="text-3xl">No product Uploaded till now</h1>
+        </div>
       )}
     </>
   );

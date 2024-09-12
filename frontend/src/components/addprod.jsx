@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import Cookie from 'js-cookie';
 function ProductForm() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -16,7 +16,8 @@ function ProductForm() {
   //const [taxCode, setTaxCode] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const sellerid = Cookie.get('sellerID');
+  console.log(sellerid);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -41,7 +42,8 @@ function ProductForm() {
         hsn,
         //tax_code: taxCode,
         height,
-        weight
+        weight,
+        sellerid,
       };
       console.log(productData);
       setLoading(true); // Start loading

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import PasswordInput from '../../components/Input/Passwordinput'
 import { validateEmail } from '../../utils/helper'
 import googlelogo from './assets/Group.svg'
-
+import Cookies from 'js-cookie'
 const Login = () => {
 
     const [email, setEmail] = useState('');
@@ -38,12 +38,13 @@ const Login = () => {
                     password,
                 }),
             });
-    
+            
             if (!response.ok) {
                 const data = await response.json();
                 setError(data.error || 'Login failed');
             } else {
                 const data = await response.json();
+                Cookies.set('sellerID', data.sellerid);
                 console.log('Login successful:', data);
                 window.location.href = '/dashboard';
             }
