@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MainCard from '../Cards/MainCard'
 import Modal from '../Modal';
 
@@ -21,23 +21,27 @@ const CardSection = () => {
   },[])
   return (
     <>
-    <div className='flex justify-center h-[60vh] items-center gap-6'>
-        {
-        response.map((item, key)=>{
-          return <MainCard index={key} name={item.name} description={item.description}
-          onClick={() => setSelectedProduct(item)}  // Open modal with the selected product
-           />
-        })
-        }
-    </div>
-    {selectedProduct && (
+      <div className='flex justify-center h-[60vh] items-center gap-6'>
+        {Array.isArray(response) && response.length > 0 ? (
+          response.map((item, key) => (
+            <MainCard 
+              key={key} 
+              name={item.name} 
+              description={item.description}
+              onClick={() => setSelectedProduct(item)}  // Open modal with the selected product
+            />
+          ))
+        ) : (
+          <p>No products available</p>  // Handle cases when there are no products
+        )}
+      </div>
+      {selectedProduct && (
         <Modal 
           product={selectedProduct}
           onClose={() => setSelectedProduct(null)}  // Close modal
         />
       )}
     </>
-  )
-}
+  );}
 
 export default CardSection;
