@@ -31,6 +31,7 @@ type Prod struct {
 	Height       string `json:"height" bson:"height"`
 	Weight       string `json:"weight" bson:"weight"`
 	HSN          string `json:"hsn" bson:"hsn"`
+	ImageURL     string `json:"image_url" bson:"image_url"`
 }
 
 func getMongoCollection(collectionName string) (*mongo.Collection, error) {
