@@ -18,8 +18,9 @@ import SellerHome from './pages/Seller/SellerHome'
 
 import ProdDocs from './pages/Dashboard/prodDocs'
 import ExportRegistration from './pages/Dashboard/ExportRegistration'
+import SellerProducts from './pages/Dashboard/SellerProducts'
 
-import SellerProducts from './pages/Seller/SellerProducts'
+
 const App = () => {
   return (
     <Router>

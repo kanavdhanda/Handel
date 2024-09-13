@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 
 const DashSideNav = () => {
   return (
-    <div className="w-[300px] min-h-screen bg-white shadow-lg text-slate-600 flex flex-col font-medium ">
+    <div className="w-[300px] h-[200vh] bg-white shadow-lg text-slate-600 flex flex-col font-medium ">
       <div className="p-3">
       </div>
       <nav className="flex flex-col flex-grow">
@@ -49,6 +49,13 @@ const DashSideNav = () => {
           activeClassName="bg-gray-700"
         >
           Add New Product
+        </NavLink>
+        <NavLink 
+          to="/sellerproducts" 
+          className="py-4 px-12 hover:bg-gray-200 transition-colors"
+          activeClassName="bg-gray-700"
+        >
+          My Products
         </NavLink>
       </nav>
     </div>
