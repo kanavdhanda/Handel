@@ -5,6 +5,8 @@ import MainCard from '../../components/Cards/MainCard';
 import Modal from '../../components/Modal';  // Import the modal component
 import Cookies from 'js-cookie';
 import {useEffect} from 'react';
+import DashTopNav from '../../components/Navbar/DashTopNav';
+import DashSideNav from '../../components/Navbar/DashSideNav';
 export default function SellerProducts() {
   const [response, setResponse] = React.useState([]);
   const [selectedProduct, setSelectedProduct] = React.useState(null);  // To store the selected product
@@ -43,8 +45,9 @@ useEffect(() => {
 
   return (
     <>
-      <Navbar />
-      <NavigationBar />
+      <DashTopNav />
+      <DashSideNav/>
+      <div className="ml-[22vw] mt-[14vh] absolute top-0 p-4">
       <div className="flex justify-center h-full items-center gap-6 flex-wrap mb-4">
         {response.map((item, key) => (
           <MainCard
@@ -69,6 +72,7 @@ useEffect(() => {
           <h1 className="text-3xl">No product Uploaded till now</h1>
         </div>
       )}
+      </div>
     </>
   );
 }
