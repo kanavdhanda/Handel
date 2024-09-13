@@ -64,7 +64,7 @@ useEffect(() => {
         />
       
       )}
-      {!selectedProduct && (
+      {!response && (
         <div className="flex justify-center items-center h-96">
           <h1 className="text-3xl">No product Uploaded till now</h1>
         </div>
