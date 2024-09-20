@@ -15,7 +15,7 @@ const sellerID = Cookies.get('sellerID');
 
 const dataLao = async () => {
   try {
-    const response = await fetch('http://localhost:8080/myproducts');
+    const response = await fetch('https://api.handelexports.com/myproducts');
     const data = await response.json();
     setResponse(data);
   } catch (error) {

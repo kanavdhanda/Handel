@@ -8,7 +8,7 @@ const ProductViewer = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8080/getprod');
+      const response = await fetch('https://api.handelexports.com/getprod');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

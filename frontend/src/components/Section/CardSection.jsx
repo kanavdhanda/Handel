@@ -7,7 +7,7 @@ const CardSection = () => {
   const [response,setResponse] = React.useState([]); 
   const [selectedProduct, setSelectedProduct] = React.useState(null);  // To store the selected product 
   const dataLao = async () =>{
-    const response = await fetch("http://localhost:8080/getprod");
+    const response = await fetch("https://api.handelexports.com/getprod");
     const data = await response.json();
     const final = data.data;
     // return final;

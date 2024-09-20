@@ -7,7 +7,7 @@ const FileUpload = () => {
 
   const handleUpload = async () => {
     try {
-      const res = await fetch('http://localhost:8080/addlist', {
+      const res = await fetch('https://api.handelexports.com/addlist', {
         method: 'POST',
       });
 

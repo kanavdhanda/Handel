@@ -36,7 +36,7 @@ const SignUp = () => {
         setError("");
 
         try{
-            const response = await fetch('http://localhost:8080/signup', {
+            const response = await fetch('https://api.handelexports.com/signup', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
@@ -96,7 +96,7 @@ const SignUp = () => {
                   <div className="bg-slate-400 h-[2px] w-full"></div>
                 </div>
 
-                <button type='button' onClick={() => window.location.href = 'http://localhost:8080/auth/google'} className='flex items-center justify-center border-2 border-gray-400 text-gray-600 mt-2 w-full py-2 gap-3 hover:bg-black hover:text-white transition-all'>
+                <button type='button' onClick={() => window.location.href = 'https://api.handelexports.com/auth/google'} className='flex items-center justify-center border-2 border-gray-400 text-gray-600 mt-2 w-full py-2 gap-3 hover:bg-black hover:text-white transition-all'>
                     <img src={googlelogo} alt="asd" className='w-5' />
                     Sign Up with Google
                 </button>

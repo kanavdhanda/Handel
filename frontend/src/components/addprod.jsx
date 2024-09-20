@@ -49,7 +49,7 @@ function ProductForm() {
       };
       console.log(productData);
       setLoading(true); // Start loading
-      const response = await fetch('http://localhost:8080/addprod', {
+      const response = await fetch('https://api.handelexports.com/addprod', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

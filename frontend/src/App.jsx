@@ -38,7 +38,7 @@ const App = () => {
         <Route path="/paymentrec" element={<PaymentRec />} />
         <Route path="/sellerhome" element={<SellerHome />} />
 
-        <Route path="/payment" element={<Payments />} />
+        <Route path="/cart" element={<Payments />} />
         <Route path='*' element={<h1>Not Found</h1>} />
         <Route path="/order" element={<OrderPage/>} />
         <Route path="/proddocs" element={<ProdDocs/>} />
@@ -50,4 +50,4 @@ const App = () => {
   )
 }
 
-export default App
+export default App   
