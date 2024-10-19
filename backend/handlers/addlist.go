@@ -13,11 +13,11 @@ import (
 
 const (
 	apiURL   = "https://apiv2.shiprocket.in/v1/external/listings/import"
-	token    = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUwNTY4NzQsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzI2OTAyNDAxLCJqdGkiOiJxQ2RsUlFoS1BxV1VyYzBwIiwiaWF0IjoxNzI2MDM4NDAxLCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTcyNjAzODQwMSwiY2lkIjo0ODczOTI3LCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.KLtGx42EWGLYUFNIwMeqh0W1gwTXxHngsuQKKhouQuo"
 	filePath = "C:/Users/Sarthak/handel/backend/handlers/listing.csv"
 )
 
 func Listhandler(c *gin.Context) {
+	token := os.Getenv("TOKEN")
 	file, err := os.Open(filePath)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to open file"})

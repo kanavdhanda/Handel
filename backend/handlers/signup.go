@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -24,7 +25,15 @@ func SignUpHandler(c *gin.Context, client *mongo.Client, databaseName, collectio
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
+	collection := client.Database(databaseName).Collection(collectionName)
+	check := collection.FindOne(context.TODO(), bson.M{"email": signupData.Email})
+	if err := check.Err(); err == nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "duplicate entries not allowed"})
+		return
+	} else if err != mongo.ErrNoDocuments {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "database error"})
+		return
+	}
 	sellerID := uuid.New().String()
 	signupData.SellerID = sellerID
 	hashedPassword, err2 := bcrypt.GenerateFromPassword([]byte(signupData.Password), bcrypt.DefaultCost)
@@ -33,8 +42,6 @@ func SignUpHandler(c *gin.Context, client *mongo.Client, databaseName, collectio
 		return
 	}
 	signupData.Password = string(hashedPassword)
-
-	collection := client.Database(databaseName).Collection(collectionName)
 
 	_, err := collection.InsertOne(context.TODO(), signupData)
 	if err != nil {
