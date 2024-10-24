@@ -28,6 +28,7 @@ const CardSection = () => {
               key={key} 
               name={item.name} 
               description={item.description}
+              image = {item.image}
               onClick={() => setSelectedProduct(item)}  // Open modal with the selected product
             />
           ))

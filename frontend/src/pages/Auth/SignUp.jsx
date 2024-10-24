@@ -4,9 +4,10 @@ import PasswordInput from '../../components/Input/Passwordinput';
 import { Link } from 'react-router-dom';
 import { validateEmail } from '../../utils/helper';
 import googlelogo from './assets/Group.svg'
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
-
+    const navigate = useNavigate();
     const [name, setName] = useState("");
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -47,6 +48,7 @@ const SignUp = () => {
             const data = await response.json();
             if (response.ok) {
                 alert('Signup successful!');
+                navigate('/');
             } else {
                 alert('Signup failed: ' + data.error);
             }

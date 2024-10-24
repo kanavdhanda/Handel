@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  go-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - GO_ENV=production
+      - GOOGLE_CLIENT_ID=405482426715-25p70peromhfaj9cek4d8can2tk26npk.apps.googleusercontent.com
+      - GOOGLE_CLIENT_SECRET=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
+      - GOOGLE_REDIRECTURL=https://api.handelexports.com/auth/google/callback
+      - export GIN_MODE=release
+    volumes:
+      - .:/app
+    restart: unless-stopped

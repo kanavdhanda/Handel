@@ -1,31 +1,38 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import Cookies from 'js-cookie';
 const Modal = ({ product, onClose }) => {
   const navigate = useNavigate();
-
+  const logged = Cookies.get('sellerID');
   const handlePurchase = () => {
-    let cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
+    if(logged){
+      let cart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
 
-    // Check if product already exists in the cart
-    const existingProductIndex = cart.findIndex((item) => item.id === product.id);
-
-    if (existingProductIndex > -1) {
-      // Product already exists, increase the quantity
-      cart[existingProductIndex].cartQuantity += 1;
-      cart[existingProductIndex].mrp = cart[existingProductIndex].basePrice * cart[existingProductIndex].cartQuantity;
-    } else {
-      // Add new product to the cart with initial quantity 1
-      const newProduct = { ...product, cartQuantity: 1, basePrice: product.mrp }; // Store base price for easy calculations
-      cart.push(newProduct);
+      // Check if product already exists in the cart
+      const existingProductIndex = cart.findIndex((item) => item.id === product.id);
+  
+      if (existingProductIndex > -1) {
+        // Product already exists, increase the quantity
+        cart[existingProductIndex].cartQuantity += 1;
+        cart[existingProductIndex].mrp = cart[existingProductIndex].basePrice * cart[existingProductIndex].cartQuantity;
+      } else {
+        // Add new product to the cart with initial quantity 1
+        const newProduct = { ...product, cartQuantity: 1, basePrice: product.mrp }; // Store base price for easy calculations
+        cart.push(newProduct);
+      }
+  
+      // Update localStorage
+      localStorage.setItem('shoppingCart', JSON.stringify(cart));
+  
+      // Navigate to the cart page
+      navigate('/cart');
+    }
+    else{
+      alert('Please Login First Before Adding to cart');
+      navigate(0);
     }
 
-    // Update localStorage
-    localStorage.setItem('shoppingCart', JSON.stringify(cart));
-
-    // Navigate to the cart page
-    navigate('/payment');
   };
 
   if (!product) return null;
@@ -42,7 +49,7 @@ const Modal = ({ product, onClose }) => {
 
         <div className="flex flex-col md:flex-row items-start gap-6">
           <img 
-            src={product.image || './trial.jpg'}
+            src={product.image || product.image_url || './trial.jpg'}
             alt={product.name}
             className="w-full md:w-[40%] rounded-lg object-cover"
           />

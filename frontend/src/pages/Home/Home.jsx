@@ -1,11 +1,21 @@
-
+import {useEffect , useState} from 'react'
 import Navbar from '../../components/Navbar/Navbar'
 import NavigationBar from '../../components/Navbar/NavigationBar'
 import CardSection from '../../components/Section/CardSection'
 import Footer from '../../components/Footer/Footer'
 import { Link } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 const  Home = () => {
+  const [loggedIn,setLoggedIn] = useState(false)
+useEffect(()=>{
+  const loggedin = Cookies.get('sellerID');
+  console.log(loggedin);
+  if(loggedin){
+    console.log('here');
+    setLoggedIn(true);
+  }
+},[])
   return (
     <>
       <Navbar />
@@ -15,7 +25,12 @@ const  Home = () => {
         <div className="flex flex-col border border-gray-600 p-10 rounded-lg w-[60%] backdrop-blur-sm">
             <h1 className='text-6xl text-white'>Embrace tradition, shop sustainably</h1>
             <h2 className='text-sm text-white mt-7'>Handicrafted items delivered at your doorstep</h2>
-        <Link to="/signup" className='bg-white w-fit px-10 rounded-lg mt-7 py-3 hover:bg-black hover:text-white transition-all'>Sign Up to Shop</Link>
+          {loggedIn ? (
+        <Link to="/products" className='bg-white w-fit px-10 rounded-lg mt-7 py-3 hover:bg-black hover:text-white transition-all'>Checkout Products</Link>
+          ):(
+        <Link to="/login" className='bg-white w-fit px-10 rounded-lg mt-7 py-3 hover:bg-black hover:text-white transition-all'>Sign In to Shop</Link>
+          )
+          }
         </div>
       </div>
       <h5 className='flex justify-center items-center text-5xl mt-20 font-serif '>The best Products exist in the makret</h5>

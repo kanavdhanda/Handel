@@ -25,8 +25,8 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         
         <Route path="/dashboard" element={<Dashboard />} />
@@ -38,9 +38,9 @@ const App = () => {
         <Route path="/paymentrec" element={<PaymentRec />} />
         <Route path="/sellerhome" element={<SellerHome />} />
 
-        <Route path="/cart" element={<Payments />} />
+        {/* <Route path="/cart" element={<Payments />} /> */}
         <Route path='*' element={<h1>Not Found</h1>} />
-        <Route path="/order" element={<OrderPage/>} />
+        {/* <Route path="/order" element={<OrderPage/>} /> */}
         <Route path="/proddocs" element={<ProdDocs/>} />
         <Route path="/exportreg" element={<ExportRegistration/>} />
 

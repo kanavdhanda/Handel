@@ -18,7 +18,6 @@ function ProductForm() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const sellerid = Cookie.get('sellerID');
-  console.log(sellerid);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -226,7 +225,7 @@ function ProductForm() {
             Image Link:
             <input
               type="text"
-              value={description}
+              value={imgLink}
               onChange={(e) => setImgLink(e.target.value)}
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
               required

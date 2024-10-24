@@ -9,7 +9,7 @@ const Cart = ({ item }) => {
             <span className='text-xl font-semibold'>${item.mrp}</span>
           </div>
         </div>
-      </div>
+      </div>      
     );
   };
   
